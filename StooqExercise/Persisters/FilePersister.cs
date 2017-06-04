@@ -28,21 +28,24 @@ namespace StooqExercise.Persisters
             }
 
             string[] readText = File.ReadAllLines(filePath);
-            bool changed = false;
+            bool valuesChanged = readText.Length == 0;
 
             for (int i = 1; i < 7; i++)
             {
-                var value = values.Values.ElementAt(values.Count - i);
-                var savedRawVal = readText.ElementAt(readText.Length - i);
-                var savedVal = savedRawVal.Substring(savedRawVal.IndexOf(':') + 1).Trim();
-                if (value != savedVal)
+                if (!valuesChanged)
                 {
-                    changed = true;
-                    break;
+                    var value = values.Values.ElementAt(values.Count - i);
+                    var savedRawVal = readText.ElementAt(readText.Length - i);
+                    var savedVal = savedRawVal.Substring(savedRawVal.IndexOf(':') + 1).Trim();
+                    if (value != savedVal)
+                    {
+                        valuesChanged = true;
+                        break;
+                    }
                 }
             }
 
-            if (!changed)
+            if (!valuesChanged)
             {
                 return;
             }
